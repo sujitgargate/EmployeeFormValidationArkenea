@@ -57,4 +57,23 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
   </table>
+
+  <div>
+
+    <div *ngIf="displayAlertCreateEmployee" class="alert alert-primary" role="alert">
+      Employee Created sucessfully
+    </div>
+
+    <div *ngIf="displayAlertDeleteEmployee" class="alert alert-primary" role="alert">
+
+      <strong>Employee Deleted sucessfully!</strong>
+    </div>
+
+    <!-- <button (click)="openConfirmationDialog()" type="button" class="btn btn-primary">Open dialog</button> -->
+
+
+    <h1>displayAlertCreateEmployee{{displayAlertCreateEmployee}}</h1>
+
+    <h1>displayAlertDeleteEmployee{{displayAlertDeleteEmployee}}</h1>
+  </div>
 </div>

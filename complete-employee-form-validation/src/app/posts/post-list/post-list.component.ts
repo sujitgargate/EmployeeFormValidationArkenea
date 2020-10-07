@@ -6,6 +6,8 @@ import { PostsService } from "../posts.service";
 
 import { PostCreateComponent } from "../post-create/post-create.component";
 import { MatDialog } from "@angular/material";
+import { ConfirmationDialogComponent } from '../../confirmation-dialog/confirmation-dialog.component';
+import { ConfirmationDialogService } from '../../confirmation-dialog/confirmation-dialog.service';
 
 @Component({
   selector: "app-post-list",
@@ -13,13 +15,7 @@ import { MatDialog } from "@angular/material";
   styleUrls: ["./post-list.component.css"],
 })
 export class PostListComponent implements OnInit, OnDestroy {
-  constructor(public postsService: PostsService, public dialog: MatDialog) {}
-
-  // posts = [
-  //   { title: "First Post", content: "This is the first post's content" },
-  //   { title: "Second Post", content: "This is the second post's content" },
-  //   { title: "Third Post", content: "This is the third post's content" }
-  // ];
+  constructor(public postsService: PostsService, public dialog: MatDialog, private confirmService: ConfirmationDialogComponent, private confirmationDialogService: ConfirmationDialogService) {}
 
   data: any;
   dataSource: Object;
@@ -34,11 +30,16 @@ export class PostListComponent implements OnInit, OnDestroy {
 
   //Employee:any= [];
 
+  displayAlertDeleteEmployee = false
+  displayAlertCreateEmployee = false
+
   posts: Post[] = [];
   isLoading = false;
   private postsSub: Subscription;
 
   ngOnInit() {
+
+
     this.isLoading = true;
     this.postsService.getPosts();
     this.postsSub = this.postsService
@@ -58,17 +59,10 @@ export class PostListComponent implements OnInit, OnDestroy {
   // }
 
   onDelete(postId: string) {
+    this.displayAlertDeleteEmployee = true
     this.postsService.deletePost(postId);
   }
 
-
-  // onDelete() {
-  //   this.postsService.delete(postId: string).subscribe(res => {
-  //     console.log(res);
-  //     this.router.navigate(['list'])
-
-  //   })
-  // }
 
   ngOnDestroy() {
     this.postsSub.unsubscribe();
@@ -88,7 +82,16 @@ export class PostListComponent implements OnInit, OnDestroy {
 
       dialogRef.afterClosed().subscribe((result) => {
         console.log(`Dialog result: ${result}`);
+        this.displayAlertCreateEmployee = true
       });
     });
   }
+
+
+  public openConfirmationDialog() {
+    this.confirmationDialogService.confirm('Please confirm..', 'Do you really want to ... ?')
+    .then((confirmed) => console.log('User confirmed:', confirmed))
+    .catch(() => console.log('User dismissed the dialog (e.g., by using ESC, clicking the cross icon, or clicking outside the dialog)'));
+  }
+
 }

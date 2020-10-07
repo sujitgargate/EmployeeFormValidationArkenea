@@ -13,23 +13,30 @@ import {
   MatDatepickerModule,
   MatTableModule,
   MatIconModule,
-  MatDividerModule
+  MatDividerModule,
+
 } from "@angular/material";
 
-import {MatNativeDateModule} from '@angular/material/core';
+import { MatNativeDateModule } from "@angular/material/core";
 
 import { AppComponent } from "./app.component";
 import { PostCreateComponent } from "./posts/post-create/post-create.component";
 import { HeaderComponent } from "./header/header.component";
 import { PostListComponent } from "./posts/post-list/post-list.component";
 import { AppRoutingModule } from "./app-routing.module";
+import { NgbActiveModal, NgbModule } from "@ng-bootstrap/ng-bootstrap";
+import { ConfirmationDialogComponent } from "./confirmation-dialog/confirmation-dialog.component";
+import { ConfirmationDialogService } from "./confirmation-dialog/confirmation-dialog.service";
+
+import { MatDialogModule, MatDialogRef } from "@angular/material/dialog";
 
 @NgModule({
   declarations: [
     AppComponent,
     PostCreateComponent,
     HeaderComponent,
-    PostListComponent
+    PostListComponent,
+    ConfirmationDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -50,9 +57,24 @@ import { AppRoutingModule } from "./app-routing.module";
     MatInputModule,
     MatTableModule,
     MatIconModule,
-    MatDividerModule
+    MatDividerModule,
+    NgbModule.forRoot(),
+
+    FormsModule,
+    MatDialogModule,
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: [
+    ConfirmationDialogService,
+    ConfirmationDialogComponent,
+
+    NgbActiveModal,
+    {
+      provide: MatDialogRef,
+      useValue: {},
+    },
+
+  ],
+  bootstrap: [AppComponent],
+  entryComponents: [AppComponent, ConfirmationDialogComponent],
 })
 export class AppModule {}

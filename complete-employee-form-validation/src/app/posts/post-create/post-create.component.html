@@ -34,23 +34,29 @@
 
 
     <mat-form-field appearance="fill">
-      <mat-label>Choose a date</mat-label>
+      <mat-label>Choose Birthday</mat-label>
       <input matInput required [matDatepicker]="picker" name="birthdate" id="birthdate"
         formControlName="birthdate">
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
 
-
     <div>
       <button mat-stroked-button type="button" (click)="filePicker.click()">Pick Image</button>
-      <input type="file" #filePicker (change)="onImagePicked($event)">
+      <input  type="file" #filePicker (change)="onImagePicked($event)" formControlName="imageFile" name="imageFile" id="imageFile">
     </div>
+
+
     <div class="image-preview" *ngIf="imagePreview !== '' && imagePreview && form.get('image').valid">
       <img [src]="imagePreview" [alt]="form.value.name">
     </div>
-    <button mat-raised-button color="accent" type="submit">Save Post</button>
+
+    <button mat-raised-button color="accent" type="submit">Save</button>
+
+    <div *ngIf="displayAlertCreateEmployee" class="alert alert-primary" role="alert">
+
+      <strong>Employee Created sucessfully!</strong>
+    </div>
+
   </form>
-
-
 </mat-card>

@@ -6,6 +6,9 @@ import { Router } from "@angular/router";
 
 import { Post } from "./post.model";
 
+import { ValidatorFn, AbstractControl } from '@angular/forms';
+
+
 @Injectable({ providedIn: "root" })
 export class PostsService {
   get() {
@@ -14,7 +17,10 @@ export class PostsService {
   static http: HttpClient;
 
   private posts: Post[] = [];
+
   private postsUpdated = new Subject<Post[]>();
+
+  displayAlert : boolean = false;
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -67,6 +73,7 @@ export class PostsService {
     address: string
   ) {
     const postData = new FormData();
+    this.displayAlert = true
 
     console.log("postData>>", postData);
 
@@ -107,6 +114,7 @@ export class PostsService {
     phoneNumber: string,
     address: string
   ) {
+    this.displayAlert = true
     let postData: Post | FormData;
     if (typeof image === "object") {
       postData = new FormData();
@@ -163,14 +171,22 @@ export class PostsService {
       });
   }
 
-  // deletePost(postId: string) {
-  //   this.http
-  //     .delete("http://localhost:3000/api/posts/" + postId)
-  //     .subscribe(() => {
-  //       const updatedPosts = this.posts.filter((post) => post.id !== postId);
-  //       this.posts = updatedPosts;
-  //       this.postsUpdated.next([...this.posts]);
-  //     });
-  // }
+
+  //file extension validation function
+
+fileExtensionValidator(validExt: string): ValidatorFn {
+  return (control: AbstractControl): { [key: string]: any } | null => {
+    let forbidden = true;
+    if (control.value) {
+      const fileExt = control.value.split('.').pop();
+      validExt.split(',').forEach(ext => {
+        if (ext.trim() == fileExt) {
+          forbidden = false;
+        }
+      });
+    }
+    return forbidden ? { 'inValidExt': true } : null;
+  };
+}
 
 }
