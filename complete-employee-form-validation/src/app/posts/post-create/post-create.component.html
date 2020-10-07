@@ -1,0 +1,56 @@
+<mat-card>
+  <mat-spinner *ngIf="isLoading"></mat-spinner>
+  <form [formGroup]="form" (submit)="onSavePost()" *ngIf="!isLoading">
+
+    <mat-form-field>
+      <input matInput required type="text" formControlName="name" placeholder="name">
+      <mat-error *ngIf="form.get('name').invalid">Please enter a name.</mat-error>
+    </mat-form-field>
+
+
+    <mat-form-field>
+      <input matInput required type="email" formControlName="email" placeholder="email">
+      <mat-error *ngIf="email.invalid && email.touched">Email is invalid.</mat-error>
+    </mat-form-field>
+
+
+    <mat-form-field>
+      <input matInput required type="phoneNumber" formControlName="phoneNumber" placeholder="phoneNumber">
+      <mat-error ngModel pattern="[0-9]*" *ngIf="phoneNumber.invalid && phoneNumber.touched"> Phone Number is invalid.</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput required type="address" formControlName="address" placeholder="address">
+      <mat-error *ngIf="form.get('address').invalid">Please enter Address.</mat-error>
+    </mat-form-field>
+
+<!--
+    <mat-form-field class="example-full-width">
+      <input type="date" matInput required [max]="maxDate" [matDatepicker]="picker" formControlName="birthdate"
+        placeholder="Choose birth day">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field> -->
+
+
+    <mat-form-field appearance="fill">
+      <mat-label>Choose a date</mat-label>
+      <input matInput required [matDatepicker]="picker" name="birthdate" id="birthdate"
+        formControlName="birthdate">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+
+    <div>
+      <button mat-stroked-button type="button" (click)="filePicker.click()">Pick Image</button>
+      <input type="file" #filePicker (change)="onImagePicked($event)">
+    </div>
+    <div class="image-preview" *ngIf="imagePreview !== '' && imagePreview && form.get('image').valid">
+      <img [src]="imagePreview" [alt]="form.value.name">
+    </div>
+    <button mat-raised-button color="accent" type="submit">Save Post</button>
+  </form>
+
+
+</mat-card>
